@@ -151,7 +151,8 @@ class RabbitMQStats(object):
         Returns raw queue data.
         """
         collectd.debug("Getting queues for %s" % vhost_name)
-        return self.get_info("queues", vhost_name)
+        queues = self.get_info("queues", vhost_name)
+        return filter(lambda q: is_ignored('queue', q['name']), queues)
 
     def get_queue_names(self, vhost_name=None):
         """

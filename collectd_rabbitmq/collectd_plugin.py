@@ -261,7 +261,7 @@ class CollectdPlugin(object):
                            (name, plugin_instance, vhost))
 
             value = data.get(name, 0)
-            self.dispatch_values(value, vhost, plugin, plugin_instance, name)
+            self.dispatch_values(value, vhost, plugin, plugin_instance, name, 'rabbitmq_' + name)
 
     def dispatch_exchanges(self, vhost_name):
         """

@@ -315,7 +315,7 @@ class CollectdPlugin(object):
             metric.plugin = plugin
 
             if plugin_instance:
-                metric.plugin_instance = plugin_instance
+                metric.plugin_instance = plugin_instance.replace('.', '_')
 
             metric.type = metric_type
 

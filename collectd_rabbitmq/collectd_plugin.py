@@ -155,7 +155,7 @@ class CollectdPlugin(object):
         Sends message stats to collectd.
         """
         if not data:
-            collectd.debug("No data for %s in vhost %s" % (plugin, vhost))
+            collectd.warning("No data for %s in vhost %s" % (plugin, vhost))
             return
 
         vhost = self.generate_vhost_name(vhost)
@@ -250,7 +250,7 @@ class CollectdPlugin(object):
         Sends queue stats to collectd.
         """
         if not data:
-            collectd.debug("No data for %s in vhost %s" % (plugin, vhost))
+            collectd.warning("No data for %s in vhost %s" % (plugin, vhost))
             return
 
         vhost = self.generate_vhost_name(vhost)

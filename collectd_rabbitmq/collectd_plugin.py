@@ -280,10 +280,11 @@ class CollectdPlugin(object):
         collectd.debug("Dispatching queue data for {0}".format(vhost_name))
         stats = self.rabbit.get_queue_stats(vhost_name=vhost_name)
         for queue_name, value in stats.iteritems():
+            collectd_queue_name = queue_name.replace('.', '_')
             self.dispatch_message_stats(value, vhost_name, 'queues',
-                                        queue_name)
+                                        collectd_queue_name)
             self.dispatch_queue_stats(value, vhost_name, 'queues',
-                                      queue_name)
+                                      collectd_queue_name)
 
     # pylint: disable=R0913
     @staticmethod

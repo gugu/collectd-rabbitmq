@@ -256,9 +256,9 @@ class CollectdPlugin(object):
         vhost = self.generate_vhost_name(vhost)
         for name in self.queue_stats:
             if name not in data:
-                collectd.debug("Stat ({}) not found in data.".format(name))
+                collectd.warning("Stat ({}) not found in data.".format(name))
                 continue
-            collectd.debug("Dispatching stat %s for %s in %s" %
+            collectd.warning("Dispatching stat %s for %s in %s" %
                            (name, plugin_instance, vhost))
 
             value = data.get(name, 0)

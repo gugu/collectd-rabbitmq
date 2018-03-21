@@ -261,7 +261,7 @@ class CollectdPlugin(object):
                            (name, plugin_instance, vhost))
 
             value = data.get(name, 0)
-            self.dispatch_values(value, vhost, plugin, plugin_instance, name)
+            self.dispatch_values(value, vhost, plugin, plugin_instance, name, plugin_prefix=True)
 
     def dispatch_exchanges(self, vhost_name):
         """
@@ -288,7 +288,7 @@ class CollectdPlugin(object):
     # pylint: disable=R0913
     @staticmethod
     def dispatch_values(values, host, plugin, plugin_instance,
-                        metric_type, type_instance=None):
+                        metric_type, type_instance=None, plugin_prefix=False):
         """
         Dispatch metrics to collectd.
 
@@ -317,7 +317,7 @@ class CollectdPlugin(object):
             if plugin_instance:
                 metric.plugin_instance = plugin_instance.replace('.', '_')
 
-            metric.type = metric_type
+            metric.type = ('rabbitmq_' + metric_type) if plugin_prefix else metric_type
 
             if type_instance:
                 metric.type_instance = type_instance

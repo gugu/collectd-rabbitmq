@@ -303,8 +303,8 @@ class CollectdPlugin(object):
 
         """
         path = "{0}.{1}.{2}.{3}.{4}".format(host, plugin,
-                                            plugin_instance,
-                                            metric_type.replace('.', '_'), type_instance)
+                                            plugin_instance.replace('.', '_'),
+                                            metric_type, type_instance)
 
         collectd.debug("Dispatching %s values: %s" % (path, values))
 

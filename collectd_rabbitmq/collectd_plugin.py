@@ -167,8 +167,7 @@ class CollectdPlugin(object):
                            (name, plugin_instance, vhost))
 
             value = data['message_stats'].get(name, 0)
-            collectd_name = name.replace('.', '_')
-            self.dispatch_values(value, vhost, plugin, plugin_instance, collectd_name)
+            self.dispatch_values(value, vhost, plugin, plugin_instance, name)
 
             details = data['message_stats'].get("%s_details" % name, None)
             if not details:
@@ -176,7 +175,7 @@ class CollectdPlugin(object):
             for detail in self.message_details:
                 self.dispatch_values(
                     (details.get(detail, 0)), vhost, plugin, plugin_instance,
-                    "%s_details" % collectd_name, detail)
+                    "%s_details" % name, detail)
 
     def dispatch_nodes(self):
         """
@@ -262,8 +261,7 @@ class CollectdPlugin(object):
                            (name, plugin_instance, vhost))
 
             value = data.get(name, 0)
-            collectd_name = name.replace('.', '_')
-            self.dispatch_values(value, vhost, plugin, plugin_instance, collectd_name)
+            self.dispatch_values(value, vhost, plugin, plugin_instance, name)
 
     def dispatch_exchanges(self, vhost_name):
         """
@@ -306,7 +304,7 @@ class CollectdPlugin(object):
         """
         path = "{0}.{1}.{2}.{3}.{4}".format(host, plugin,
                                             plugin_instance,
-                                            metric_type, type_instance)
+                                            metric_type.replace('.', '_'), type_instance)
 
         collectd.debug("Dispatching %s values: %s" % (path, values))
 

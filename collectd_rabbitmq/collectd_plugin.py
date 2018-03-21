@@ -167,7 +167,8 @@ class CollectdPlugin(object):
                            (name, plugin_instance, vhost))
 
             value = data['message_stats'].get(name, 0)
-            self.dispatch_values(value, vhost, plugin, plugin_instance, name)
+            collectd_name = name.replace('.', '_')
+            self.dispatch_values(value, vhost, plugin, plugin_instance, collectd_name)
 
             details = data['message_stats'].get("%s_details" % name, None)
             if not details:
@@ -175,7 +176,7 @@ class CollectdPlugin(object):
             for detail in self.message_details:
                 self.dispatch_values(
                     (details.get(detail, 0)), vhost, plugin, plugin_instance,
-                    "%s_details" % name, detail)
+                    "%s_details" % collectd_name, detail)
 
     def dispatch_nodes(self):
         """
@@ -261,7 +262,8 @@ class CollectdPlugin(object):
                            (name, plugin_instance, vhost))
 
             value = data.get(name, 0)
-            self.dispatch_values(value, vhost, plugin, plugin_instance, name)
+            collectd_name = name.replace('.', '_')
+            self.dispatch_values(value, vhost, plugin, plugin_instance, collectd_name)
 
     def dispatch_exchanges(self, vhost_name):
         """
@@ -280,11 +282,10 @@ class CollectdPlugin(object):
         collectd.debug("Dispatching queue data for {0}".format(vhost_name))
         stats = self.rabbit.get_queue_stats(vhost_name=vhost_name)
         for queue_name, value in stats.iteritems():
-            collectd_queue_name = queue_name.replace('.', '_')
             self.dispatch_message_stats(value, vhost_name, 'queues',
-                                        collectd_queue_name)
+                                        queue_name)
             self.dispatch_queue_stats(value, vhost_name, 'queues',
-                                      collectd_queue_name)
+                                      queue_name)
 
     # pylint: disable=R0913
     @staticmethod
